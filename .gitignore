@@ -1,0 +1,5 @@
+/build
+/.idea
+__pycache__
+/dist
+/farady_python.egg-info
