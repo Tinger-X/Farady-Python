@@ -1,6 +1,7 @@
-/build
 /.idea
 __pycache__
+/build
 /dist
+/tests
 /farady_python.egg-info
 /steps.md
