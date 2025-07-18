@@ -9,6 +9,8 @@
 
 # 使用示例
 
+## 代码
+
 ```python
 import math
 from FDLib import *
@@ -118,5 +120,7 @@ if __name__ == "__main__":
     MyLib().run()
 
 ```
-运行结果：
+
+## 运行结果
+
 ![example](static/example.png)
