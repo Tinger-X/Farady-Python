@@ -20,6 +20,8 @@ class Rectangle(Polygon):
             vias: List[str] = None,
             net: str = ""
     ):
+        assert width > 0, "width must be > 0"
+        assert height > 0, "height must be > 0"
         super().__init__(
             location=location,
             pins=pins,

@@ -53,7 +53,6 @@ class Arc(Polygon):
         )
 
     def draw_body(self, axes: plt.Axes):
-        # print(f"clock: {self.clockwise}, start: {self.beginAngle}, end: {self.endAngle}")
         if self.clockwise:
             self.beginAngle, self.endAngle = self.endAngle, self.beginAngle
         width = self.outerRadius - self.innerRadius

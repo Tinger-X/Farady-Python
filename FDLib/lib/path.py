@@ -14,7 +14,7 @@ class Path(Polygon):
             location: T_Points,
             width: float,
             path_type: str,  # TODO: Literal[xxx, yyy]
-            corner_type: str,  # TODO: Literal[xxx, yyy]
+            corner_type: str = "butt",  # TODO: Literal[xxx, yyy]
             metalLayer: str = "mental layer",
             pins: List[str] = None,
             pins_location: List[T_Points] = None,
