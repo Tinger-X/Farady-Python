@@ -5,7 +5,7 @@ with open("readme.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="farady-python",  # PyPI上唯一标识（必须小写+下划线）
-    version="0.1.1",  # 遵循语义化版本 (semver.org)
+    version="0.1.2",  # 遵循语义化版本 (semver.org)
     author="Tinger",
     author_email="email@tingerx.com",
     description="Farady Python Library",
