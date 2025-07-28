@@ -1,34 +1,22 @@
 from matplotlib import pyplot as plt
-from matplotlib.lines import Line2D
+from matplotlib.path import Path as PltPath
+from matplotlib.patches import PathPatch, Patch
+
+from ._shape import Shape
 from FDLib.types import *
-from FDLib.utils import *
-from .ploy import *
 
 __all__ = ["Path"]
 
 
-class Path(Polygon):
+class Path(Shape):
     def __init__(
-            self,
-            *,
-            location: T_Points,
-            width: float,
-            path_type: str,  # TODO: Literal[xxx, yyy]
-            corner_type: str = "butt",  # TODO: Literal[xxx, yyy]
-            metalLayer: str = "mental layer",
-            pins: List[str] = None,
-            pins_location: List[T_Points] = None,
-            vias: List[str] = None,
-            net: str = ""
+            self, *, location: T_Points, width: float,
+            path_type: T_PathType = "round",
+            corner_type: T_CornerType = "butt",
+            metalLayer: str, **kwargs  # pins: List[str], pins_location, vias, net
     ):
-        super().__init__(
-            location=location,
-            pins=pins,
-            pins_location=pins_location,
-            metalLayer=metalLayer,
-            vias=vias,
-            net=net
-        )
+        super().__init__(metalLayer, **kwargs)
+        self.location = location
         self.width = width
         self.path_type = path_type
         self.corner_type = corner_type
@@ -43,10 +31,19 @@ class Path(Polygon):
             f">"
         )
 
-    def draw_body(self, axes: plt.Axes):
-        xs, ys = zip(*self.location)
-        line = Line2D(xs, ys, linewidth=self.width, color=get_color(self.metalLayer), alpha=0.5)
-        axes.add_line(line)
-
-    def draw_net(self, axes: plt.Axes):
-        ...
+    def draw_body(self, axes: plt.Axes, outer: Patch = None, is_hole: bool = False) -> Patch:
+        codes = [PltPath.MOVETO] + [PltPath.LINETO] * (len(self.location) - 1)
+        path = PltPath(self.location, codes)
+        patch = PathPatch(
+            path,
+            fill=False,
+            linewidth=self.width,
+            joinstyle=self.path_type,
+            capstyle=self.corner_type,
+            alpha=self._get_alpha(is_hole),
+            color=self._get_color(is_hole)
+        )
+        axes.add_patch(patch)
+        if outer is not None:
+            patch.set_clip_path(outer)
+        return patch

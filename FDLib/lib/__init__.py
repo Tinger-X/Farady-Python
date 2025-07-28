@@ -1,4 +1,5 @@
-from .ploy import Polygon
 from .arc import Arc
 from .path import Path
-from .rect import Rectangle
+from .polygon import Polygon
+from .rectangle import Rectangle
+from .polygon_with_hole import PolygonWithHole

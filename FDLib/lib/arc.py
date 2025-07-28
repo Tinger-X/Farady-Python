@@ -1,39 +1,22 @@
 import math
-from matplotlib.patches import Wedge
+from matplotlib.patches import Wedge, Patch
 import matplotlib.pyplot as plt
+
+from ._shape import Shape
 from FDLib.types import *
-from FDLib.utils import *
-from .ploy import *
 
 __all__ = ["Arc"]
 
 
-class Arc(Polygon):
+class Arc(Shape):
     def __init__(
-            self,
-            *,
-            location: T_Point,
-            innerRadius: float,
-            outerRadius: float,
-            beginAngle: float,
-            endAngle: float,
-            clockwise: int = 1,
-            arc_type: str = "butt",  # TODO: Literal[xxx, yyy]
-            metalLayer: str = "mental layer",
-            pins: List[str] = None,
-            pins_location: List[T_Points] = None,
-            vias: List[str] = None,
-            net: str = ""
+            self, *, location: T_Point, innerRadius: float, outerRadius: float,
+            beginAngle: float, endAngle: float, clockwise: int = 1, arc_type: T_ArcType = "butt",
+            metalLayer: str, **kwargs  # pins: List[str], pins_location, vias, net
     ):
         assert 0 < innerRadius < outerRadius
-        super().__init__(
-            location=location,
-            pins=pins,
-            pins_location=pins_location,
-            metalLayer=metalLayer,
-            vias=vias,
-            net=net
-        )
+        super().__init__(metalLayer, **kwargs)
+        self.location = location
         self.innerRadius = innerRadius
         self.outerRadius = outerRadius
         self.beginAngle = (beginAngle * 180 / math.pi) % 360
@@ -52,7 +35,7 @@ class Arc(Polygon):
             f">"
         )
 
-    def draw_body(self, axes: plt.Axes):
+    def draw_body(self, axes: plt.Axes, outer: Patch = None, is_hole: bool = False) -> Patch:
         if self.clockwise:
             self.beginAngle, self.endAngle = self.endAngle, self.beginAngle
         width = self.outerRadius - self.innerRadius
@@ -62,11 +45,11 @@ class Arc(Polygon):
             self.beginAngle,
             self.endAngle,
             width=width,
-            color=get_color(self.metalLayer),
             linewidth=0,
-            alpha=0.5
+            alpha=self._get_alpha(is_hole),
+            color=self._get_color(is_hole)
         )
         axes.add_patch(patch)
-
-    def draw_net(self, axes: plt.Axes):
-        ...
+        if outer is not None:
+            patch.set_clip_path(outer)
+        return patch
