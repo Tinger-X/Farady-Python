@@ -17,7 +17,7 @@ class FDLibrary(FDBase):
 
     def show(self):
         fig, axes = plt.subplots()
-        axes.set_title("Result")
+        axes.set_title(self.__class__.__name__)
         for one in self.specifications:
             one.draw_body(axes)
             one.draw_pins(axes)

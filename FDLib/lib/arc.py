@@ -7,6 +7,10 @@ from FDLib.types import *
 
 __all__ = ["Arc"]
 
+ArcTypeMap = {
+    "butt": "butt", "round": "round", "square": "square"
+}
+
 
 class Arc(Shape):
     def __init__(
@@ -15,6 +19,7 @@ class Arc(Shape):
             metalLayer: str, **kwargs  # pins: List[str], pins_location, vias, net
     ):
         assert 0 < innerRadius < outerRadius
+        assert arc_type.lower() in ArcTypeMap
         super().__init__(metalLayer, **kwargs)
         self.location = location
         self.innerRadius = innerRadius
@@ -22,7 +27,7 @@ class Arc(Shape):
         self.beginAngle = (beginAngle * 180 / math.pi) % 360
         self.endAngle = (endAngle * 180 / math.pi) % 360
         self.clockwise = clockwise
-        self.arc_type = arc_type
+        self.arc_type = ArcTypeMap[arc_type.lower()]
 
     def __repr__(self) -> "str":
         return (

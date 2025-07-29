@@ -7,6 +7,13 @@ from FDLib.types import *
 
 __all__ = ["Path"]
 
+PathTypeMap = {
+    "butt": "miter", "round": "round", "square": "bevel"
+}
+CornerTypeMap = {
+    "butt": "butt", "round": "round", "square": "projecting"
+}
+
 
 class Path(Shape):
     def __init__(
@@ -15,11 +22,13 @@ class Path(Shape):
             corner_type: T_CornerType = "butt",
             metalLayer: str, **kwargs  # pins: List[str], pins_location, vias, net
     ):
+        assert path_type.lower() in PathTypeMap
+        assert corner_type.lower() in CornerTypeMap
         super().__init__(metalLayer, **kwargs)
         self.location = location
         self.width = width
-        self.path_type = path_type
-        self.corner_type = corner_type
+        self.path_type = PathTypeMap[path_type.lower()]
+        self.corner_type = CornerTypeMap[corner_type.lower()]
 
     def __repr__(self) -> "str":
         return (
