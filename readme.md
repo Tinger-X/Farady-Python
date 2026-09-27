@@ -124,3 +124,59 @@ if __name__ == "__main__":
 ## 运行结果
 
 ![example](static/example.png)
+
+# FD3DLibrary - 3D 元素绘制
+
+FDLib 现已支持 3D 元素绘制功能。
+
+## 3D 使用示例
+
+```python
+from FDLib import *
+
+class My3DLib(FD3DLibrary):
+    metalLayers = ["Red", "Green", "Blue"]
+    Parameters = {
+        "X": 0.0, "Y": 0.0, "Z": 0.0, "Size": 10.0
+    }
+    ParameterOrder = ["X", "Y", "Z", "Size"]
+    
+    def check_param(self):
+        assert self.Size > 0, "Size must be > 0"
+    
+    def reload(self):
+        self.check_param()
+        
+        self.specifications = [
+            Cube(
+                location=(self.X, self.Y, self.Z),
+                width=self.Size,
+                height=self.Size,
+                depth=self.Size,
+                metalLayer="Red"
+            ),
+            Sphere(
+                location=(self.X + 20, self.Y, self.Z + self.Size/2),
+                radius=self.Size / 2,
+                metalLayer="Green",
+                resolution=30
+            ),
+            Cylinder(
+                location=(self.X - 20, self.Y, self.Z),
+                radius=self.Size / 3,
+                height=self.Size * 1.5,
+                metalLayer="Blue"
+            )
+        ]
+
+if __name__ == "__main__":
+    My3DLib().run()
+```
+
+## 支持的 3D 形状
+
+- **Cube** - 立方体/长方体
+- **Sphere** - 球体
+- **Cylinder** - 圆柱体
+
+详细文档请参考：[docs/FD3DLibrary.md](docs/FD3DLibrary.md)
