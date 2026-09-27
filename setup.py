@@ -5,7 +5,7 @@ with open("readme.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="farady-python",
-    version="0.1.3",
+    version="0.1.4",
     author="Tinger",
     author_email="email@tingerx.com",
     description="Farady Python Library",
